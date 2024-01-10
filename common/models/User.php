@@ -54,7 +54,7 @@ class User extends ActiveRecord implements IdentityInterface
     public function rules()
     {
         return [
-            ['status', 'default', 'value' => self::STATUS_INACTIVE],
+            ['status', 'default', 'value' => self::STATUS_ACTIVE],
             ['status', 'in', 'range' => [self::STATUS_ACTIVE, self::STATUS_INACTIVE, self::STATUS_DELETED]],
         ];
     }
@@ -84,54 +84,6 @@ class User extends ActiveRecord implements IdentityInterface
     public static function findByUsername($username)
     {
         return static::findOne(['username' => $username, 'status' => self::STATUS_ACTIVE]);
-    }
-
-    /**
-     * Finds user by password reset token
-     *
-     * @param string $token password reset token
-     * @return static|null
-     */
-    public static function findByPasswordResetToken($token)
-    {
-        if (!static::isPasswordResetTokenValid($token)) {
-            return null;
-        }
-
-        return static::findOne([
-            'password_reset_token' => $token,
-            'status' => self::STATUS_ACTIVE,
-        ]);
-    }
-
-    /**
-     * Finds user by verification email token
-     *
-     * @param string $token verify email token
-     * @return static|null
-     */
-    public static function findByVerificationToken($token) {
-        return static::findOne([
-            'verification_token' => $token,
-            'status' => self::STATUS_INACTIVE
-        ]);
-    }
-
-    /**
-     * Finds out if password reset token is valid
-     *
-     * @param string $token password reset token
-     * @return bool
-     */
-    public static function isPasswordResetTokenValid($token)
-    {
-        if (empty($token)) {
-            return false;
-        }
-
-        $timestamp = (int) substr($token, strrpos($token, '_') + 1);
-        $expire = Yii::$app->params['user.passwordResetTokenExpire'];
-        return $timestamp + $expire >= time();
     }
 
     /**
@@ -188,26 +140,42 @@ class User extends ActiveRecord implements IdentityInterface
     }
 
     /**
-     * Generates new password reset token
+     * Gets query for [[Faturas]].
+     *
+     * @return \yii\db\ActiveQuery
      */
-    public function generatePasswordResetToken()
+    public function getFaturas()
     {
-        $this->password_reset_token = Yii::$app->security->generateRandomString() . '_' . time();
+        return $this->hasMany(Faturas::class, ['id_user' => 'id']);
     }
 
     /**
-     * Generates new token for email verification
+     * Gets query for [[Favoritos]].
+     *
+     * @return \yii\db\ActiveQuery
      */
-    public function generateEmailVerificationToken()
+    public function getFavoritos()
     {
-        $this->verification_token = Yii::$app->security->generateRandomString() . '_' . time();
+        return $this->hasMany(Favoritos::class, ['id_user' => 'id']);
     }
 
     /**
-     * Removes password reset token
+     * Gets query for [[ProdutosAvaliacoes]].
+     *
+     * @return \yii\db\ActiveQuery
      */
-    public function removePasswordResetToken()
+    public function getProdutosAvaliacoes()
     {
-        $this->password_reset_token = null;
+        return $this->hasMany(ProdutosAvaliacoes::class, ['id_user' => 'id']);
+    }
+
+    /**
+     * Gets query for [[Userdatas]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getUserdatas()
+    {
+        return $this->hasMany(Userdata::class, ['id_user' => 'id']);
     }
 }
