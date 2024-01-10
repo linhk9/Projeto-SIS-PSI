@@ -52,10 +52,15 @@ return [
                 [
                     'class' => 'yii\rest\UrlRule','controller' => 'api/user',
                     'extraPatterns' => [
+                        'GET {id}/userdata' => 'perfil',
 
+                        'POST login' => 'login',
+                        'POST registo' => 'registo',
+
+                        'PUT {id}/atualizar' => 'atualizarperfil',
                     ],
                     'tokens' => [
-                        '{id}' => '<id:\\d+>'
+                        '{id}' => '<id:\\d+>',
                     ],
                 ],
 
