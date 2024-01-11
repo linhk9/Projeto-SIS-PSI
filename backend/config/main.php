@@ -67,15 +67,19 @@ return [
                     'class' => 'yii\rest\UrlRule','controller' => 'api/favorito',
                     'extraPatterns' =>[
                         'GET userdata/{id_userdata}' => 'favoritosuserdata',
-                        'POST userdata/{id_userdata}/add/{id_produto}' => 'favoritosadd',
-                        'DELETE userdata/{id_userdata}/delete/{id_produto}' => 'favoritodelete',
-                        'PUT userdata/{id_userdata}/update/{id_produto}/{id_new_produto}' => 'favoritosupdate',
-                        ],
+                    ],
                     'tokens' => [
                         '{id}' => '<id:\\d+>',
                         '{id_userdata}' => '<id_userdata:\\d+>',
-                        '{id_produto}' => '<id_produto:\\d+>',
-                        '{id_new_produto}' => '<id_new_produto:\\d+>',
+                    ],
+                ],
+                [
+                    'class' => 'yii\rest\UrlRule','controller' => 'api/produto',
+                    'extraPatterns' =>[
+                        'GET comnomecategoria' => 'comnomecategoria',
+                    ],
+                    'tokens' => [
+                        '{id}' => '<id:\\d+>',
                     ],
                 ],
                 [
@@ -89,14 +93,15 @@ return [
                     ],
                 ],
                 [
-                    'class' => 'yii\rest\UrlRule','controller' => 'api/produto',
+                    'class' => 'yii\rest\UrlRule','controller' => 'api/fatura',
                     'extraPatterns' =>[
+                        'GET userdata/{id_userdata}' => 'faturauserdata',
                     ],
                     'tokens' => [
                         '{id}' => '<id:\\d+>',
+                        '{id_userdata}' => '<id_userdata:\\d+>',
                     ],
                 ],
-
             ],
         ],
 

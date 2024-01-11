@@ -2,6 +2,9 @@
 
 namespace backend\modules\api\controllers;
 
+use backend\modules\api\components\CustomAuth;
+use Yii;
+use yii\filters\auth\QueryParamAuth;
 use yii\rest\ActiveController;
 
 /**
@@ -11,6 +14,28 @@ class UserController extends ActiveController
 {
     public $modelClass = 'common\models\User';
     public $modelClassUserdata = 'common\models\Userdata';
+
+
+//    public function behaviors()
+//    {
+//        Yii::$app->params['id'] = 0;
+//        $behaviors = parent::behaviors();
+//        $behaviors['authenticator'] = [
+//            'class' => CustomAuth::className(),
+//        ];
+//        return $behaviors;
+//    }
+
+//    public function checkAccess($action, $model = null, $params = [])
+//    {
+//        if(Yii::$app->params['id'] == 1)
+//        {
+//            if($action==="delete")
+//            {
+//                throw new \yii\web\ForbiddenHttpException('Proibido');
+//            }
+//        }
+//    }
 
     public function actionPerfil($id)
     {
@@ -37,8 +62,8 @@ class UserController extends ActiveController
     {
         $model = $this->modelClass;
 
-        $username = \Yii::$app->request->post('username');
-        $password = \Yii::$app->request->post('password');
+        $username = Yii::$app->request->post('username');
+        $password = Yii::$app->request->post('password');
 
         if (!isset($username, $password)) {
             throw new \yii\web\BadRequestHttpException('Parâmetros inválidos');
@@ -46,15 +71,10 @@ class UserController extends ActiveController
 
         $user = $model::findByUsername($username);
         if (!$user || !$user->validatePassword($password)) {
-            throw new \yii\web\UnauthorizedHttpException('Credenciais inválidas');
+            throw new \yii\web\UnauthorizedHttpException('Parâmetros inválidas');
         }
 
-        return [
-            'id' => $user->id,
-            'username' => $user->username,
-            'email' => $user->email,
-            'status' => $user->status,
-        ];
+        return $user;
     }
 
     public function actionRegisto()
@@ -108,11 +128,11 @@ class UserController extends ActiveController
         $model = $this->modelClass;
         $modelUserdata = $this->modelClassUserdata;
 
-        $email = \Yii::$app->request->post('email');
-        $primeiroNome = \Yii::$app->request->post('primeiroNome');
-        $ultimoNome = \Yii::$app->request->post('ultimoNome');
-        $telemovel = \Yii::$app->request->post('telemovel');
-        $morada = \Yii::$app->request->post('morada');
+        $email = Yii::$app->request->post('email');
+        $primeiroNome = Yii::$app->request->post('primeiroNome');
+        $ultimoNome = Yii::$app->request->post('ultimoNome');
+        $telemovel = Yii::$app->request->post('telemovel');
+        $morada = Yii::$app->request->post('morada');
 
         if (!isset($email, $primeiroNome, $ultimoNome, $telemovel, $morada)) {
             throw new \yii\web\BadRequestHttpException('Parâmetros inválidos');
