@@ -49,6 +49,15 @@ return [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
+                // TODO: Bloquear actions que não são necessárias
+
+                // TODO: Remover Carrinho Linha
+                // TODO: Carrinho Checkout
+                // TODO: Editar Perfil
+
+                // TODO: Calcular Promoção nos Produtos (ação comnomecategoria)
+                //  (enviar preço antigo caso exista promoção)
+
                 [
                     'class' => 'yii\rest\UrlRule','controller' => 'api/user',
                     'extraPatterns' => [
