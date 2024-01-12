@@ -13,6 +13,14 @@ class UserController extends ActiveController
     public $modelClass = 'common\models\User';
     public $modelClassUserdata = 'common\models\Userdata';
 
+    public function actions()
+    {
+        $actions = parent::actions();
+
+        unset($actions['delete'], $actions['create'], $actions['update']);
+
+        return $actions;
+    }
 
     public function actionPerfil($id)
     {
