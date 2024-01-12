@@ -104,7 +104,7 @@ class UserController extends ActiveController
         }
 
         return [
-            'menssage' => 'Utilizador criado com sucesso'
+            'message' => 'Utilizador criado com sucesso'
         ];
     }
 
@@ -148,7 +148,7 @@ class UserController extends ActiveController
         }
 
         return [
-            'menssage' => 'Perfil atualizado com sucesso'
+            'message' => 'Perfil atualizado com sucesso'
         ];
     }
 }

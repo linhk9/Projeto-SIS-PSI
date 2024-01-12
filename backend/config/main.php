@@ -85,12 +85,15 @@ return [
                     'class' => 'yii\rest\UrlRule','controller' => 'api/carrinho',
                     'extraPatterns' =>[
                         'GET userdata/{id_userdata}' => 'carrinhouserdata',
-                        'DELETE linha/{id}' => 'deletelinha',
-                        'DELETE checkout/{id_userdata}' => 'checkout',
-                        'PUT linha/{id}/qtd' => 'atualizarquantidade',
+                        'POST checkout/{id_userdata}' => 'checkout',
+                        'POST linha/{id_userdata}/{id_produto}' => 'adicionarlinha',
+                        'DELETE linha/{id_linha}' => 'deletelinha',
+                        'PUT linha/{id_linha}/qtd' => 'atualizarquantidade',
                     ],
                     'tokens' => [
                         '{id}' => '<id:\\d+>',
+                        '{id_linha}' => '<id_linha:\\d+>',
+                        '{id_produto}' => '<id_produto:\\d+>',
                         '{id_userdata}' => '<id_userdata:\\d+>',
                     ],
                 ],

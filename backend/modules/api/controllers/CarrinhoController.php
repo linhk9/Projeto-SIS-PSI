@@ -82,7 +82,7 @@ class CarrinhoController extends ActiveController
         $carrinhoLinha->save();
 
         return [
-            'menssage' => 'Quantidade atualizada com sucesso'
+            'message' => 'Quantidade atualizada com sucesso'
         ];
     }
 
@@ -108,9 +108,38 @@ class CarrinhoController extends ActiveController
         }
 
         return [
-            'menssage' => 'Produto eliminado com sucesso'
+            'message' => 'Produto eliminado com sucesso'
         ];
+    }
 
+    public function actionAdicionarlinha($id_userdata, $id_produto)
+    {
+        $model = $this->modelClass;
+        $modelLinhas = $this->modelClassLinhas;
+
+        $carrinho = $model::find()->where(['id_userdata' => $id_userdata])->one();
+        if ($carrinho === null) {
+            $carrinho = new $model();
+            $carrinho->id_userdata = $id_userdata;
+            $carrinho->data = date('Y-m-d');
+            $carrinho->save();
+        }
+
+        $carrinhoLinha = $modelLinhas::find()->where(['id_carrinho' => $carrinho->id, 'id_produto' => $id_produto])->one();
+        if ($carrinhoLinha === null) {
+            $carrinhoLinha = new $modelLinhas();
+            $carrinhoLinha->id_carrinho = $carrinho->id;
+            $carrinhoLinha->id_produto = $id_produto;
+            $carrinhoLinha->quantidade = 1;
+            $carrinhoLinha->preco = $carrinhoLinha->produto->preco;
+        } else {
+            $carrinhoLinha->quantidade += 1;
+        }
+        $carrinhoLinha->save();
+
+        return [
+            'message' => 'Produto adicionado ao carrinho com sucesso'
+        ];
     }
 
     public function actionCheckout($id_userdata)
@@ -147,7 +176,7 @@ class CarrinhoController extends ActiveController
         }
 
         return [
-            'menssage' => 'Checkout feito com sucesso'
+            'message' => 'Checkout feito com sucesso'
         ];
     }
 }
