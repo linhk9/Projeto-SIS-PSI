@@ -51,8 +51,6 @@ return [
             'rules' => [
                 // TODO: Bloquear actions que não são necessárias
 
-                // TODO: Remover Carrinho Linha
-                // TODO: Carrinho Checkout
                 // TODO: Editar Perfil
 
                 // TODO: Calcular Promoção nos Produtos (ação comnomecategoria)
@@ -95,6 +93,8 @@ return [
                     'class' => 'yii\rest\UrlRule','controller' => 'api/carrinho',
                     'extraPatterns' =>[
                         'GET userdata/{id_userdata}' => 'carrinhouserdata',
+                        'DELETE linha/{id}' => 'deletelinha',
+                        'DELETE checkout/{id_userdata}' => 'checkout',
                     ],
                     'tokens' => [
                         '{id}' => '<id:\\d+>',
