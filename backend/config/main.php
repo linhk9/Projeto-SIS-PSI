@@ -49,9 +49,6 @@ return [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
-                // TODO: Bloquear actions que não são necessárias
-                // TODO: Funcionalidade baseada em messaging
-
                 [
                     'class' => 'yii\rest\UrlRule','controller' => 'api/user',
                     'extraPatterns' => [
@@ -90,6 +87,7 @@ return [
                         'GET userdata/{id_userdata}' => 'carrinhouserdata',
                         'DELETE linha/{id}' => 'deletelinha',
                         'DELETE checkout/{id_userdata}' => 'checkout',
+                        'PUT linha/{id}/qtd' => 'atualizarquantidade',
                     ],
                     'tokens' => [
                         '{id}' => '<id:\\d+>',

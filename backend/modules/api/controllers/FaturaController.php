@@ -2,6 +2,7 @@
 
 namespace backend\modules\api\controllers;
 
+use yii\filters\auth\HttpBasicAuth;
 use yii\rest\ActiveController;
 
 /**
@@ -11,6 +12,36 @@ class FaturaController extends ActiveController
 {
     public $modelClass = 'common\models\Faturas';
     public $modelClassLinhas = 'common\models\FaturaLinhas';
+
+    public function behaviors()
+    {
+        $behaviors = parent::behaviors();
+        $behaviors['authenticator'] = [
+            'class' => HttpBasicAuth::className(),
+            'auth' => [$this, 'authf']
+        ];
+        return $behaviors;
+    }
+    //Header: Authorization 'Basic'.base64($username.':'.$password);
+
+    public function authf($username, $password)
+    {
+        $user = \common\models\User::findByUsername($username);
+        if ($user && $user->validatePassword($password))
+        {
+            return $user;
+        }
+        throw new \yii\web\ForbiddenHttpException('Falha na autenticação'); //403
+    }
+
+    public function actions()
+    {
+        $actions = parent::actions();
+
+        unset($actions['delete'], $actions['create'], $actions['update'], $actions['index'], $actions['view']);
+
+        return $actions;
+    }
 
     public function actionFaturauserdata($id_userdata)
     {

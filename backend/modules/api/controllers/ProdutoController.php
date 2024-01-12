@@ -3,6 +3,7 @@
 namespace backend\modules\api\controllers;
 
 use Yii;
+use yii\filters\auth\HttpBasicAuth;
 use yii\rest\ActiveController;
 
 /**
@@ -12,6 +13,36 @@ class ProdutoController extends ActiveController
 {
     public $modelClass = 'common\models\Produtos';
     public $modelClassPromocao = 'common\models\Promocoes';
+
+    public function behaviors()
+    {
+        $behaviors = parent::behaviors();
+        $behaviors['authenticator'] = [
+            'class' => HttpBasicAuth::className(),
+            'auth' => [$this, 'authf']
+        ];
+        return $behaviors;
+    }
+    //Header: Authorization 'Basic'.base64($username.':'.$password);
+
+    public function authf($username, $password)
+    {
+        $user = \common\models\User::findByUsername($username);
+        if ($user && $user->validatePassword($password))
+        {
+            return $user;
+        }
+        throw new \yii\web\ForbiddenHttpException('Falha na autenticação'); //403
+    }
+
+    public function actions()
+    {
+        $actions = parent::actions();
+
+        unset($actions['delete'], $actions['create'], $actions['update'], $actions['index'], $actions['view']);
+
+        return $actions;
+    }
 
     public function actionComnomecategoria()
     {

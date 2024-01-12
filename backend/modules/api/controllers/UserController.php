@@ -2,9 +2,7 @@
 
 namespace backend\modules\api\controllers;
 
-use backend\modules\api\components\CustomAuth;
 use Yii;
-use yii\filters\auth\QueryParamAuth;
 use yii\rest\ActiveController;
 
 /**
@@ -15,27 +13,6 @@ class UserController extends ActiveController
     public $modelClass = 'common\models\User';
     public $modelClassUserdata = 'common\models\Userdata';
 
-
-//    public function behaviors()
-//    {
-//        Yii::$app->params['id'] = 0;
-//        $behaviors = parent::behaviors();
-//        $behaviors['authenticator'] = [
-//            'class' => CustomAuth::className(),
-//        ];
-//        return $behaviors;
-//    }
-
-//    public function checkAccess($action, $model = null, $params = [])
-//    {
-//        if(Yii::$app->params['id'] == 1)
-//        {
-//            if($action==="delete")
-//            {
-//                throw new \yii\web\ForbiddenHttpException('Proibido');
-//            }
-//        }
-//    }
 
     public function actionPerfil($id)
     {
