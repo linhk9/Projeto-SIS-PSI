@@ -50,21 +50,16 @@ return [
             'showScriptName' => false,
             'rules' => [
                 // TODO: Bloquear actions que não são necessárias
-
-                // TODO: Editar Perfil
-
-                // TODO: Calcular Promoção nos Produtos (ação comnomecategoria)
-                //  (enviar preço antigo caso exista promoção)
+                // TODO: Funcionalidade baseada em messaging
 
                 [
                     'class' => 'yii\rest\UrlRule','controller' => 'api/user',
                     'extraPatterns' => [
                         'GET {id}/userdata' => 'perfil',
+                        'PUT {id}/atualizar' => 'atualizarperfil',
 
                         'POST login' => 'login',
                         'POST registo' => 'registo',
-
-                        'PUT {id}/atualizar' => 'atualizarperfil',
                     ],
                     'tokens' => [
                         '{id}' => '<id:\\d+>',
