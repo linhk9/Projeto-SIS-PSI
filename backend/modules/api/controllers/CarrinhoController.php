@@ -2,6 +2,7 @@
 
 namespace backend\modules\api\controllers;
 
+use Yii;
 use yii\filters\auth\HttpBasicAuth;
 use yii\rest\ActiveController;
 
@@ -69,7 +70,7 @@ class CarrinhoController extends ActiveController
         ];
     }
 
-    public function actionAtualizarquantidade($id_linha, $quantidade)
+    public function actionAtualizarquantidade($id_linha)
     {
         $model = $this->modelClassLinhas;
 
@@ -78,7 +79,7 @@ class CarrinhoController extends ActiveController
             throw new \yii\web\BadRequestHttpException('Esta linha não existe');
         }
 
-        $carrinhoLinha->quantidade = $quantidade;
+        $carrinhoLinha->quantidade = Yii::$app->request->post('quantidade');
         $carrinhoLinha->save();
 
         return [
@@ -86,12 +87,12 @@ class CarrinhoController extends ActiveController
         ];
     }
 
-    public function actionDeletelinha($id)
+    public function actionDeletelinha($id_linha)
     {
         $model = $this->modelClass;
         $modelLinhas = $this->modelClassLinhas;
 
-        $carrinhoLinha = $modelLinhas::findOne($id);
+        $carrinhoLinha = $modelLinhas::findOne($id_linha);
         if ($carrinhoLinha === null) {
             throw new \yii\web\BadRequestHttpException('Esta linha não existe');
         }
