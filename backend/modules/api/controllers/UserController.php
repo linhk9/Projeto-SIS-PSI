@@ -59,7 +59,13 @@ class UserController extends ActiveController
             throw new \yii\web\UnauthorizedHttpException('Parâmetros inválidas');
         }
 
-        return $user;
+        $modelUserdata = $this->modelClassUserdata;
+        $userdata = $modelUserdata::findOne(['id_user' => $user->id]);
+
+        $userArray = $user->attributes;
+        $userArray['id_userdata'] = $userdata->id;
+
+        return $userArray;
     }
 
     public function actionRegisto()
