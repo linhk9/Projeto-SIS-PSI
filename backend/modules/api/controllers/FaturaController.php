@@ -48,21 +48,26 @@ class FaturaController extends ActiveController
         $model = new $this->modelClass;
         $modelFaturaLinhas = new $this->modelClassLinhas;
 
-        $fatura = $model->find()->where(['id_userdata' => $id_userdata])->one();
-        if (!$fatura) {
-            throw new \yii\web\NotFoundHttpException('Fatura não foi encontrada');
+        $faturas = $model->find()->where(['id_userdata' => $id_userdata])->all();
+        if (!$faturas) {
+            throw new \yii\web\NotFoundHttpException('Faturas não foram encontradas');
         }
 
-        $faturaLinhas = $modelFaturaLinhas->find()->where(['id_fatura' => $fatura->id])->all();
-        if (!$faturaLinhas) {
-            throw new \yii\web\NotFoundHttpException('Fatura Linhas não foi encontrada');
+        $faturasData = [];
+        foreach ($faturas as $fatura) {
+            $faturaLinhas = $modelFaturaLinhas->find()->where(['id_fatura' => $fatura->id])->all();
+            if (!$faturaLinhas) {
+                throw new \yii\web\NotFoundHttpException('Fatura Linhas não foram encontradas');
+            }
+
+            $faturasData[] = [
+                'id' => $fatura->id,
+                'id_userdata' => $fatura->id_userdata,
+                'data' => $fatura->data,
+                'faturaLinhas' => $faturaLinhas
+            ];
         }
 
-        return [
-            'id' => $fatura->id,
-            'id_userdata' => $fatura->id_userdata,
-            'data' => $fatura->data,
-            'faturaLinhas' => $faturaLinhas
-        ];
+        return $faturasData;
     }
 }
